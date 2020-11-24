@@ -1,49 +1,34 @@
-import React from 'react'
-// import axios from 'axios'
+import React, {useState, useEffect} from 'react'
+import Axios from 'axios'
+import Pokes from './Pokes'
 
-class Body extends React.Component{
-    
-    constructor(props) {
-        super(props);
-     
-        this.state = {
-            pokemons: []
-        };
-      }
-    
-    // const [datos, setDatos] = useState([])
+const Body2 = () => {
 
-    // // useEffect(() =>{
-    // //     axios.get("https://pokeapi.co/api/v2/pokemon?limit=99")
-    // //     .then(res => {
-    // //         setDatos(res.data)
-    // //         console.log(datos)
-    // //     })
-    // // })
-    componentDidMount(){
-        fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
-        .then(res => res.json())
-        .then(data => {
-            if (data) {
-              this.setState({pokemons : data.results}, () => {})
-            }
-        })
-        .then(res => console.log(this.state))
-    }
-    render(){
-        return(
-            <div>  
-                { this.state.pokemons.map((pokemon, index) => {
-                    return (
-                        <div className="card text-center mx-auto" style={{"maxWidth" : "18rem"}} key={pokemon.id}>
-                        <div className="card-header"><b>{pokemon.name} : {pokemon.url}</b></div>        
-                        </div>  
-                    );
-                })}
+    const [pokemon, setPokemon] = useState([])
+
+    useEffect(()=>{
+        async function fetchData() {
+            const res = await Axios.get("https://pokeapi.co/api/v2/pokemon?offset=0&limit=20")
+            setPokemon(res.data.results)
+            console.log(res.data.results)
+        }
+        fetchData();
+    },[])
+
+    return(
+        <div className="container mx-auto">
+            <div className="d-flex flex-wrap">
+                { pokemon.map((po,index)=>(
+                    <div key={index}>
+                        <Pokes 
+                            name={po.name}
+                            url={po.url}
+                        />
+                    </div>
+                ))}
             </div>
-        )        
-    }
-
+        </div>
+    )
 }
 
-export default Body
+export default Body2
