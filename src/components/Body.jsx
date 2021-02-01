@@ -2,35 +2,27 @@ import React, {useState, useEffect} from 'react'
 import Axios from 'axios'
 import Pokes from './Pokes'
 
-const Body = () => {
+const Body = (props) => {
 
-    const [pokemon, setPokemon] = useState([])
+    const {pokemon, setPokemon} = props
     const [page, setPage] = useState(0)
-
-    async function changeData() {
-        const res = await Axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${page}&limit=20`)
-        setPokemon(res.data.results)
-        console.log(res.data.results) 
-    }
 
     const handleNext = () =>{
         setPokemon([])
         setPage(page + 20)
-        changeData()
     }
     const handlePrev = () =>{
         setPokemon([])
-        setPage(page + 20)
-        changeData()
+        setPage(page - 20)
     }
 
     useEffect(()=>{
         async function fetchData() {
-            const res = await Axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=20`)
+            const res = await Axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${page}&limit=20`)
             setPokemon(res.data.results)
         }
         fetchData();
-    },[])
+    },[page])
 
     return(
         <div className="container mx-auto">

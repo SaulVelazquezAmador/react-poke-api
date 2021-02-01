@@ -12,10 +12,9 @@ const Pokes = (props) => {
             const res = await Axios.get(url)
             setAbilities(res.data.abilities)
             setSprite(res.data.sprites.other['official-artwork'])
-            console.log(res.data)
         }
         fetchUrl()
-    },[])
+    },[url])
     return(
         <div className="card col-10 my-2 mx-2">
             <img className="card-img-top mx-auto" style={styles.imagenes} src={sprite.front_default} alt="poke"/>
